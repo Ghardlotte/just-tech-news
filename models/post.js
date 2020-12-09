@@ -1,6 +1,5 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
-
 // create our Post model
 class Post extends Model {
     static upvote(body, models) {
@@ -26,40 +25,42 @@ class Post extends Model {
       });
     }
   }
-    // create fields/columns for Post model
+// write validator so the column with the froeign key in the post can be validated with the user. 
+
 Post.init(
     {
-      id: {
+        id: {
+            // use the special Sequelize DataTypes object provide what type of data it is
         type: DataTypes.INTEGER,
         allowNull: false,
         primaryKey: true,
         autoIncrement: true
-      },
-      title: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
-      post_url: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          isURL: true
+        },
+        title: {
+            type: DataTypes.STRING,
+            allowNull: false
+          },
+          post_url: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: {
+              isURL: true
+            }
+          },
+          user_id: {
+            type: DataTypes.INTEGER,
+            references: {
+              model: 'user',
+              key: 'id'
+            }
+          }
+        },
+        {
+          sequelize,
+          freezeTableName: true,
+          underscored: true,
+          modelName: 'post'
         }
-      },
-      user_id: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: 'user',
-          key: 'id'
-        }
-      }
-    },
-    {
-      sequelize,
-      freezeTableName: true,
-      underscored: true,
-      modelName: 'post'
-    }
-  );
+);
 
-  module.exports = Post;
+module.exports = Post;
