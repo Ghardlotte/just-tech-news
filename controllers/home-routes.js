@@ -44,13 +44,8 @@ router.get('/login', (req, res) => {
     res.redirect('/');
     return;
   }
+
   res.render('login');
-});
-
-router.get('/', (req, res) => {
-  console.log(req.session);
-
-  // other logic...
 });
 
 module.exports = router;
